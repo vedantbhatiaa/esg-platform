@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line } from 'recharts';
 import { AlertCircle, TrendingUp, TrendingDown, Award, Leaf, Users, Shield, Database, Search, Download, ExternalLink, FileText, CheckCircle } from 'lucide-react';
+import esgDataset from "./data/esgDataset.json";
+
 
 const ESGPlatform = () => {
   const [selectedCompany, setSelectedCompany] = useState('AAPL');
@@ -11,6 +13,8 @@ const ESGPlatform = () => {
   const [finnhubKey, setFinnhubKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [fetchedData, setFetchedData] = useState(null);
+  const [inferredMetrics, setInferredMetrics] = useState(null);
+
 
   const externalDatasets = {
     kaggle_sp500: {
@@ -125,116 +129,114 @@ const ESGPlatform = () => {
     CDP: { name: 'CDP', weight: { E: 0.60, S: 0.15, G: 0.25 } }
   };
 
-  const handleFetchData = async () => {
-    if (!selectedCompany) {
-      alert('Please enter a company symbol');
-      return;
-    }
+const handleFetchData = () => {
+  const data = esgDataset[selectedCompany];
 
-    if (dataSource === 'finnhub' && !finnhubKey) {
-      alert('Please enter your Finnhub API key');
-      return;
-    }
+  if (!data) {
+    alert("No ESG data available for this company yet");
+    return;
+  }
 
-    setIsLoading(true);
-    setFetchedData(null);
+  setInferredMetrics({
+    environmental: Object.entries(data.environmental.metrics).map(
+      ([metric, score]) => ({
+        metric,
+        score,
+        weight: 0.2,
+        trend: "stable"
+      })
+    ),
+    social: Object.entries(data.social.metrics).map(
+      ([metric, score]) => ({
+        metric,
+        score,
+        weight: 0.2,
+        trend: "stable"
+      })
+    ),
+    governance: Object.entries(data.governance.metrics).map(
+      ([metric, score]) => ({
+        metric,
+        score,
+        weight: 0.2,
+        trend: "stable"
+      })
+    ),
+    controversies: data.controversies
+  });
+};
 
-    try {
-      let result;
+  // 1. Pick active company data from JSON
+const activeCompanyData =
+  selectedCompany &&
+  esgDataset[selectedCompany.toUpperCase()]
+    ? esgDataset[selectedCompany.toUpperCase()]
+    : null;
 
-      if (dataSource === 'finnhub') {
-        const response = await fetch(
-          `https://finnhub.io/api/v1/stock/esg?symbol=${selectedCompany}&token=${finnhubKey}`
-        );
-        
-        if (!response.ok) throw new Error('API request failed');
-        const data = await response.json();
-        
-        result = {
-          source: 'finnhub',
-          company: selectedCompany,
-          environmental: data.environmentScore || 0,
-          social: data.socialScore || 0,
-          governance: data.governanceScore || 0,
-          totalScore: data.totalScore || 0,
-          rawData: data
-        };
-      } else if (dataSource === 'sec_edgar') {
-        const tickerResponse = await fetch(
-          'https://www.sec.gov/files/company_tickers.json',
-          { headers: { 'User-Agent': 'ESG-Platform contact@example.com' } }
-        );
-        const tickers = await tickerResponse.json();
-        const company = Object.values(tickers).find(t => t.ticker === selectedCompany.toUpperCase());
-        
-        if (!company) throw new Error('Company not found');
-        
-        result = {
-          source: 'sec_edgar',
-          company: selectedCompany,
-          companyName: company.title,
-          cik: company.cik_str
-        };
-      }
+// 2. Build ESG score ONLY if data exists
+const esgScore = activeCompanyData
+  ? (() => {
+      const env = activeCompanyData.environmental.score ?? 0;
+      const soc = activeCompanyData.social.score ?? 0;
+      const gov = activeCompanyData.governance.score ?? 0;
 
-      setFetchedData(result);
-    } catch (error) {
-      alert(`Error: ${error.message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      const avg = Math.round((env + soc + gov) / 3);
 
-  const calculateESGScore = (metrics, framework) => {
-    const fw = frameworks[framework];
-    
-    const environmentalScore = metrics.environmental.reduce((sum, m) => sum + m.score * m.weight, 0);
-    const socialScore = metrics.social.reduce((sum, m) => sum + m.score * m.weight, 0);
-    const governanceScore = metrics.governance.reduce((sum, m) => sum + m.score * m.weight, 0);
-    
-    const totalScore = (
-      environmentalScore * fw.weight.E +
-      socialScore * fw.weight.S +
-      governanceScore * fw.weight.G
-    );
-    
-    const finalScore = Math.max(0, Math.min(100, totalScore - (metrics.controversies * 5)));
-    
-    return {
-      total: Math.round(finalScore),
-      environmental: Math.round(environmentalScore),
-      social: Math.round(socialScore),
-      governance: Math.round(governanceScore),
-      rating: finalScore >= 80 ? 'AAA' : finalScore >= 70 ? 'AA' : finalScore >= 60 ? 'A' : finalScore >= 50 ? 'BBB' : finalScore >= 40 ? 'BB' : finalScore >= 30 ? 'B' : 'CCC'
+      return {
+        environmental: env,
+        social: soc,
+        governance: gov,
+        total: avg,
+        rating:
+          avg >= 80 ? 'AAA' :
+          avg >= 70 ? 'AA' :
+          avg >= 60 ? 'A' :
+          avg >= 50 ? 'BBB' :
+          'BB'
+      };
+    })()
+  : {
+      environmental: 0,
+      social: 0,
+      governance: 0,
+      total: 0,
+      rating: 'N/A'
     };
-  };
 
-  const sampleMetrics = {
-    environmental: [
-      { metric: 'GHG Emissions', score: fetchedData?.environmental || 72, weight: 0.25, trend: 'improving' },
-      { metric: 'Renewable Energy', score: 65, weight: 0.20, trend: 'stable' },
-      { metric: 'Water Management', score: 78, weight: 0.15, trend: 'improving' },
-      { metric: 'Waste Reduction', score: 82, weight: 0.20, trend: 'improving' },
-      { metric: 'Biodiversity', score: 58, weight: 0.20, trend: 'declining' }
-    ],
-    social: [
-      { metric: 'Employee Safety', score: fetchedData?.social || 85, weight: 0.25, trend: 'improving' },
-      { metric: 'Diversity', score: 68, weight: 0.20, trend: 'improving' },
-      { metric: 'Labor Relations', score: 75, weight: 0.15, trend: 'stable' },
-      { metric: 'Community', score: 70, weight: 0.20, trend: 'stable' },
-      { metric: 'Human Rights', score: 80, weight: 0.20, trend: 'stable' }
-    ],
-    governance: [
-      { metric: 'Board Independence', score: fetchedData?.governance || 88, weight: 0.25, trend: 'stable' },
-      { metric: 'Ethics', score: 82, weight: 0.25, trend: 'improving' },
-      { metric: 'Compensation', score: 65, weight: 0.15, trend: 'stable' },
-      { metric: 'Shareholder Rights', score: 78, weight: 0.20, trend: 'improving' },
-      { metric: 'Transparency', score: 72, weight: 0.15, trend: 'stable' }
-    ],
-    controversies: 2
-  };
+  // 3. Build ACTIVE METRICS for Pillars tab (THIS WAS MISSING)
+const activeMetrics = activeCompanyData
+  ? {
+      environmental: Object.entries(activeCompanyData.environmental.metrics).map(
+        ([metric, score]) => ({
+          metric,
+          score,
+          weight: Math.round(100 / Object.keys(activeCompanyData.environmental.metrics).length),
+          trend: "stable"
+        })
+      ),
+      social: Object.entries(activeCompanyData.social.metrics).map(
+        ([metric, score]) => ({
+          metric,
+          score,
+          weight: Math.round(100 / Object.keys(activeCompanyData.social.metrics).length),
+          trend: "stable"
+        })
+      ),
+      governance: Object.entries(activeCompanyData.governance.metrics).map(
+        ([metric, score]) => ({
+          metric,
+          score,
+          weight: Math.round(100 / Object.keys(activeCompanyData.governance.metrics).length),
+          trend: "stable"
+        })
+      )
+    }
+  : {
+      environmental: [],
+      social: [],
+      governance: []
+    };
 
-  const esgScore = calculateESGScore(sampleMetrics, selectedFramework);
 
   const peerData = [
     { company: 'Your Company', E: esgScore.environmental, S: esgScore.social, G: esgScore.governance, Total: esgScore.total },
@@ -433,7 +435,7 @@ const ESGPlatform = () => {
                   {pillar} Metrics
                 </h3>
                 <div className="space-y-3">
-                  {sampleMetrics[pillar].map((metric, idx) => (
+                  {activeMetrics[pillar].map((metric, idx) => (
                     <div key={idx} className="border border-slate-200 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium text-slate-700">{metric.metric}</span>
@@ -453,7 +455,7 @@ const ESGPlatform = () => {
                         />
                       </div>
                       <div className="mt-2 text-sm text-slate-600">
-                        Weight: {(metric.weight * 100).toFixed(0)}% | Trend: {metric.trend}
+                        Weight: {(100 / activeMetrics[pillar].length).toFixed(0)}% | Trend: {metric.trend}
                       </div>
                     </div>
                   ))}
