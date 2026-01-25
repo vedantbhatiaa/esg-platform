@@ -13,8 +13,10 @@ const Login = ({ onLogin }) => {
       onLogin('admin');
     } else if (username === 'user' && password === 'user123') {
       onLogin('user');
+    } else if (username === 'guest' && password === '') {
+      onLogin('guest');
     } else {
-      setError('Invalid credentials. Try admin/admin123 or user/user123');
+      setError('Invalid credentials. Try admin/admin123, user/user123, or guest (no password)');
     }
   };
 
@@ -57,8 +59,8 @@ const Login = ({ onLogin }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-              placeholder="Enter password"
-              required
+              placeholder="Enter password (leave empty for guest)"
+              required={username !== 'guest'}
             />
           </div>
 
@@ -80,6 +82,7 @@ const Login = ({ onLogin }) => {
           <p>Demo Credentials:</p>
           <p>Admin: admin / admin123</p>
           <p>User: user / user123</p>
+          <p>Guest: guest / (no password)</p>
         </div>
       </div>
     </div>

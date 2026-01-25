@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line, ReferenceLine } from 'recharts';
-import { AlertCircle, TrendingUp, TrendingDown, Award, Leaf, Users, Shield, Database, Search, Download, ExternalLink, FileText, CheckCircle, Clock, RefreshCw, Brain } from 'lucide-react';
+import { AlertCircle, TrendingUp, TrendingDown, Award, Leaf, Users, Shield, Database, Download, ExternalLink, FileText, CheckCircle, Clock, RefreshCw, Brain } from 'lucide-react';
 
 const ESGPlatform = ({ userRole, onLogout }) => {
   const [selectedCompany, setSelectedCompany] = useState('TSLA');
@@ -539,292 +539,464 @@ const ESGPlatform = ({ userRole, onLogout }) => {
           </div>
         )}
 
-        {/* PILLARS TAB - Original, unchanged */}
-        {activeTab === 'pillars' && esgMetrics && (
-          <div className="space-y-6">
-            {['environmental', 'social', 'governance'].map(category => (
-              <div key={category} className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold mb-4 capitalize flex items-center gap-2">
-                  {category === 'environmental' && <Leaf className="w-6 h-6 text-emerald-600" />}
-                  {category === 'social' && <Users className="w-6 h-6 text-blue-600" />}
-                  {category === 'governance' && <Shield className="w-6 h-6 text-purple-600" />}
-                  {category} Metrics
-                </h3>
-                <div className="space-y-4">
-                  {esgMetrics[category].map((metric, idx) => (
-                    <div key={idx} className="border-b border-slate-200 pb-4 last:border-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                          <span className="font-semibold text-slate-700">{metric.metric}</span>
-                          <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">{metric.source}</span>
+        {/* PILLARS TAB */}
+        {activeTab === 'pillars' && (
+          <div className="relative">
+            {esgMetrics && (
+              <div className={`space-y-6 ${userRole === 'guest' ? 'blur-sm pointer-events-none' : ''}`}>
+                {['environmental', 'social', 'governance'].map(category => (
+                  <div key={category} className="bg-white rounded-lg shadow-lg p-6">
+                    <h3 className="text-xl font-bold mb-4 capitalize flex items-center gap-2">
+                      {category === 'environmental' && <Leaf className="w-6 h-6 text-emerald-600" />}
+                      {category === 'social' && <Users className="w-6 h-6 text-blue-600" />}
+                      {category === 'governance' && <Shield className="w-6 h-6 text-purple-600" />}
+                      {category} Metrics
+                    </h3>
+                    <div className="space-y-4">
+                      {esgMetrics[category].map((metric, idx) => (
+                        <div key={idx} className="border-b border-slate-200 pb-4 last:border-0">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-3">
+                              <span className="font-semibold text-slate-700">{metric.metric}</span>
+                              <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">{metric.source}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl font-bold text-slate-800">{metric.score}</span>
+                              {metric.trend === 'improving' && <TrendingUp className="w-5 h-5 text-green-600" />}
+                              {metric.trend === 'declining' && <TrendingDown className="w-5 h-5 text-red-600" />}
+                            </div>
+                          </div>
+                          <div className="w-full bg-slate-200 rounded-full h-3">
+                            <div
+                              className={`h-3 rounded-full ${
+                                category === 'environmental' ? 'bg-emerald-500' :
+                                category === 'social' ? 'bg-blue-500' : 'bg-purple-500'
+                              }`}
+                              style={{ width: `${metric.score}%` }}
+                            />
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl font-bold text-slate-800">{metric.score}</span>
-                          {metric.trend === 'improving' && <TrendingUp className="w-5 h-5 text-green-600" />}
-                          {metric.trend === 'declining' && <TrendingDown className="w-5 h-5 text-red-600" />}
-                        </div>
-                      </div>
-                      <div className="w-full bg-slate-200 rounded-full h-3">
-                        <div
-                          className={`h-3 rounded-full ${
-                            category === 'environmental' ? 'bg-emerald-500' :
-                            category === 'social' ? 'bg-blue-500' : 'bg-purple-500'
-                          }`}
-                          style={{ width: `${metric.score}%` }}
-                        />
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+            )}
+            {userRole === 'guest' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-xl">
+                <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-900 mb-4">Buy Membership</h3>
+                  <p className="text-amber-800 mb-6 text-lg">
+                    Get full access to detailed ESG metrics analysis and premium features.
+                  </p>
+                  <div className="bg-amber-50 rounded-lg p-4 mb-6">
+                    <h4 className="font-semibold text-amber-900 mb-3">Premium Features Include:</h4>
+                    <ul className="text-left space-y-2 text-amber-700">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Detailed environmental, social, and governance metrics</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Performance trend analysis</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Industry peer comparisons</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Advanced data sources and APIs</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('overview')}
+                    className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+                  >
+                    Back to Overview
+                  </button>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         )}
 
-        {/* MATERIALITY TAB - Original, unchanged */}
+        {/* MATERIALITY TAB */}
         {activeTab === 'materiality' && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Material Issues for {selectedIndustry.charAt(0).toUpperCase() + selectedIndustry.slice(1)}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {Object.entries(industryMateriality[selectedIndustry]).map(([category, issues]) => (
-                <div key={category} className="border-2 border-slate-200 rounded-lg p-4">
-                  <h4 className="font-bold text-lg mb-3 capitalize flex items-center gap-2">
-                    {category === 'environmental' && <Leaf className="w-5 h-5 text-emerald-600" />}
-                    {category === 'social' && <Users className="w-5 h-5 text-blue-600" />}
-                    {category === 'governance' && <Shield className="w-5 h-5 text-purple-600" />}
-                    {category}
-                  </h4>
-                  <ul className="space-y-2">
-                    {issues.map((issue, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <span>{issue}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+          <div className="relative">
+            <div className={`bg-white rounded-lg shadow-lg p-6 min-h-[600px] ${userRole === 'guest' ? 'blur-sm pointer-events-none' : ''}`}>
+              <h3 className="text-xl font-bold mb-4">Material Issues for {selectedIndustry.charAt(0).toUpperCase() + selectedIndustry.slice(1)}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {Object.entries(industryMateriality[selectedIndustry]).map(([category, issues]) => (
+                  <div key={category} className="border-2 border-slate-200 rounded-lg p-4">
+                    <h4 className="font-bold text-lg mb-3 capitalize flex items-center gap-2">
+                      {category === 'environmental' && <Leaf className="w-5 h-5 text-emerald-600" />}
+                      {category === 'social' && <Users className="w-5 h-5 text-blue-600" />}
+                      {category === 'governance' && <Shield className="w-5 h-5 text-purple-600" />}
+                      {category}
+                    </h4>
+                    <ul className="space-y-2">
+                      {issues.map((issue, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-sm">
+                          <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                          <span>{issue}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              {userRole === 'guest' && <div className="h-32"></div>}
             </div>
+            {userRole === 'guest' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-xl">
+                <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-900 mb-4">Buy Membership</h3>
+                  <p className="text-amber-800 mb-6 text-lg">
+                    Get full access to industry materiality analysis and premium features.
+                  </p>
+                  <div className="bg-amber-50 rounded-lg p-4 mb-6">
+                    <h4 className="font-semibold text-amber-900 mb-3">Premium Features Include:</h4>
+                    <ul className="text-left space-y-2 text-amber-700">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Industry-specific materiality issues</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>ESG framework comparisons</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Advanced analytics and insights</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('overview')}
+                    className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+                  >
+                    Back to Overview
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* PEERS TAB - Original, unchanged */}
+        {/* PEERS TAB */}
         {activeTab === 'peers' && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-6">Industry Peer Comparison</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b-2 border-slate-200">
-                    <th className="text-left py-3 px-4">Company</th>
-                    <th className="text-center py-3 px-4">Environmental</th>
-                    <th className="text-center py-3 px-4">Social</th>
-                    <th className="text-center py-3 px-4">Governance</th>
-                    <th className="text-center py-3 px-4">Total</th>
-                    <th className="text-center py-3 px-4">Rating</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { name: selectedCompany, env: scores.environmental, soc: scores.social, gov: scores.governance, total: scores.total, highlight: true },
-                    { name: 'Industry Avg', env: 65, soc: 70, gov: 72, total: 69, highlight: false },
-                    { name: 'Peer 1', env: 62, soc: 68, gov: 74, total: 68, highlight: false },
-                    { name: 'Peer 2', env: 70, soc: 72, gov: 70, total: 71, highlight: false }
-                  ].map((company, idx) => {
-                    const companyRating = getRating(company.total);
-                    return (
-                      <tr key={idx} className={`border-b border-slate-100 ${company.highlight ? 'bg-emerald-50' : ''}`}>
-                        <td className="py-3 px-4 font-semibold">{company.name}</td>
-                        <td className="text-center py-3 px-4">{company.env}</td>
-                        <td className="text-center py-3 px-4">{company.soc}</td>
-                        <td className="text-center py-3 px-4">{company.gov}</td>
-                        <td className="text-center py-3 px-4 font-bold">{company.total}</td>
-                        <td className="text-center py-3 px-4">
-                          <span className={`px-3 py-1 rounded-full text-sm font-bold ${companyRating.bg} ${companyRating.color}`}>
-                            {companyRating.grade}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+          <div className="relative">
+            <div className={`bg-white rounded-lg shadow-lg p-6 min-h-[600px] ${userRole === 'guest' ? 'blur-sm pointer-events-none' : ''}`}>
+              <h3 className="text-xl font-bold mb-6">Industry Peer Comparison</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b-2 border-slate-200">
+                      <th className="text-left py-3 px-4">Company</th>
+                      <th className="text-center py-3 px-4">Environmental</th>
+                      <th className="text-center py-3 px-4">Social</th>
+                      <th className="text-center py-3 px-4">Governance</th>
+                      <th className="text-center py-3 px-4">Total</th>
+                      <th className="text-center py-3 px-4">Rating</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { name: selectedCompany, env: scores.environmental, soc: scores.social, gov: scores.governance, total: scores.total, highlight: true },
+                      { name: 'Industry Avg', env: 65, soc: 70, gov: 72, total: 69, highlight: false },
+                      { name: 'Peer 1', env: 62, soc: 68, gov: 74, total: 68, highlight: false },
+                      { name: 'Peer 2', env: 70, soc: 72, gov: 70, total: 71, highlight: false }
+                    ].map((company, idx) => {
+                      const companyRating = getRating(company.total);
+                      return (
+                        <tr key={idx} className={`border-b border-slate-100 ${company.highlight ? 'bg-emerald-50' : ''}`}>
+                          <td className="py-3 px-4 font-semibold">{company.name}</td>
+                          <td className="text-center py-3 px-4">{company.env}</td>
+                          <td className="text-center py-3 px-4">{company.soc}</td>
+                          <td className="text-center py-3 px-4">{company.gov}</td>
+                          <td className="text-center py-3 px-4 font-bold">{company.total}</td>
+                          <td className="text-center py-3 px-4">
+                            <span className={`px-3 py-1 rounded-full text-sm font-bold ${companyRating.bg} ${companyRating.color}`}>
+                              {companyRating.grade}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {userRole === 'guest' && <div className="h-32"></div>}
             </div>
+            {userRole === 'guest' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-xl">
+                <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-900 mb-4">Buy Membership</h3>
+                  <p className="text-amber-800 mb-6 text-lg">
+                    Get full access to industry peer comparison and premium features.
+                  </p>
+                  <div className="bg-amber-50 rounded-lg p-4 mb-6">
+                    <h4 className="font-semibold text-amber-900 mb-3">Premium Features Include:</h4>
+                    <ul className="text-left space-y-2 text-amber-700">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Comprehensive peer analysis</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Industry benchmarking</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Competitive positioning insights</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('overview')}
+                    className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+                  >
+                    Back to Overview
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* TRENDS TAB - UPDATED: No toggle button, always show forecasts */}
         {activeTab === 'trends' && (
-          <div className="space-y-6">
-            {/* ML Model Info Card - ALWAYS VISIBLE */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg shadow-lg p-6 border-2 border-purple-200">
-              <div className="flex items-start gap-3">
-                <Brain className="w-8 h-8 text-purple-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-2xl font-bold text-purple-900 mb-3">AI-Powered ESG Forecasting</h3>
-                  <div className="space-y-2 text-sm">
-                    <p className="text-purple-800">
-                      <strong>Model:</strong> Random Forest Regressor with 200 estimators
-                    </p>
-                    <p className="text-purple-700">
-                      <strong>Dataset:</strong> S&P 500 ESG & Stocks Data (2023-24) | <strong>Companies:</strong> 500+
-                    </p>
-                    <p className="text-purple-700">
-                      <strong>Forecast Horizon:</strong> 1 Year (4 Quarters) | <strong>Accuracy:</strong> 86-92% confidence
-                    </p>
-                    <p className="text-purple-600 mt-2">
-                      High-precision quarterly forecasts using conservative growth models, real-time EPA data, and industry trends.
-                    </p>
-                    <p className="text-purple-500 text-xs mt-2 italic">
-                      💡 For higher accuracy, recommend using multi-year dataset (2018-2025) for ML training
-                    </p>
+          <div className="relative">
+            <div className={`space-y-6 ${userRole === 'guest' ? 'blur-sm pointer-events-none' : ''}`}>
+              {/* ML Model Info Card - ALWAYS VISIBLE */}
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg shadow-lg p-6 border-2 border-purple-200">
+                <div className="flex items-start gap-3">
+                  <Brain className="w-8 h-8 text-purple-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-2xl font-bold text-purple-900 mb-3">AI-Powered ESG Forecasting</h3>
+                    <div className="space-y-2 text-sm">
+                      <p className="text-purple-800">
+                        <strong>Model:</strong> Random Forest Regressor with 200 estimators
+                      </p>
+                      <p className="text-purple-700">
+                        <strong>Dataset:</strong> S&P 500 ESG & Stocks Data (2023-24) | <strong>Companies:</strong> 500+
+                      </p>
+                      <p className="text-purple-700">
+                        <strong>Forecast Horizon:</strong> 1 Year (4 Quarters) | <strong>Accuracy:</strong> 86-92% confidence
+                      </p>
+                      <p className="text-purple-600 mt-2">
+                        High-precision quarterly forecasts using conservative growth models, real-time EPA data, and industry trends.
+                      </p>
+                      <p className="text-purple-500 text-xs mt-2 italic">
+                        💡 For higher accuracy, recommend using multi-year dataset (2018-2025) for ML training
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Chart */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-emerald-600" />
-                Historical Performance & 1-Year ML Forecasts
-              </h3>
-              <ResponsiveContainer width="100%" height={450}>
-                <LineChart data={trendData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="month" 
-                    tick={{ fontSize: 12 }}
-                  />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip 
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        const data = payload[0].payload;
-                        return (
-                          <div className="bg-white p-4 rounded-lg shadow-xl border-2 border-emerald-200">
-                            <p className="font-bold text-lg mb-2">{data.month}</p>
-                            <p className={`text-sm mb-2 font-semibold ${
-                              data.type === 'forecast' ? 'text-purple-600' : 'text-slate-600'
-                            }`}>
-                              {data.type === 'forecast' ? '🔮 ML Forecast' : data.type === 'current' ? '📍 Current' : '📈 Historical'}
-                            </p>
-                            <div className="space-y-1">
-                              <p className="text-green-600">Environmental: {data.E}</p>
-                              <p className="text-blue-600">Social: {data.S}</p>
-                              <p className="text-purple-600">Governance: {data.G}</p>
-                              <p className="text-orange-600 font-bold">Total: {data.Total}</p>
-                              {data.confidence && (
-                                <p className="text-slate-500 text-xs mt-2 pt-2 border-t">
-                                  ✓ Confidence: {data.confidence}% (High Accuracy)
-                                </p>
-                              )}
+              {/* Chart */}
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                  <TrendingUp className="w-6 h-6 text-emerald-600" />
+                  Historical Performance & 1-Year ML Forecasts
+                </h3>
+                <ResponsiveContainer width="100%" height={450}>
+                  <LineChart data={trendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="month"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className="bg-white p-4 rounded-lg shadow-xl border-2 border-emerald-200">
+                              <p className="font-bold text-lg mb-2">{data.month}</p>
+                              <p className={`text-sm mb-2 font-semibold ${
+                                data.type === 'forecast' ? 'text-purple-600' : 'text-slate-600'
+                              }`}>
+                                {data.type === 'forecast' ? '🔮 ML Forecast' : data.type === 'current' ? '📍 Current' : '📈 Historical'}
+                              </p>
+                              <div className="space-y-1">
+                                <p className="text-green-600">Environmental: {data.E}</p>
+                                <p className="text-blue-600">Social: {data.S}</p>
+                                <p className="text-purple-600">Governance: {data.G}</p>
+                                <p className="text-orange-600 font-bold">Total: {data.Total}</p>
+                                {data.confidence && (
+                                  <p className="text-slate-500 text-xs mt-2 pt-2 border-t">
+                                    ✓ Confidence: {data.confidence}% (High Accuracy)
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Legend />
-                  
-                  <ReferenceLine 
-                    x="Q1 2024" 
-                    stroke="#666" 
-                    strokeDasharray="5 5" 
-                    label={{ value: 'Current', position: 'top' }}
-                  />
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                    <Legend />
 
-                  <Line 
-                    type="monotone" 
-                    dataKey="E" 
-                    stroke="#10b981" 
-                    strokeWidth={3} 
-                    name="Environmental"
-                    dot={<CustomDot stroke="#10b981" />}
-                    strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="S" 
-                    stroke="#3b82f6" 
-                    strokeWidth={3} 
-                    name="Social"
-                    dot={<CustomDot stroke="#3b82f6" />}
-                    strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="G" 
-                    stroke="#8b5cf6" 
-                    strokeWidth={3} 
-                    name="Governance"
-                    dot={<CustomDot stroke="#8b5cf6" />}
-                    strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="Total" 
-                    stroke="#f59e0b" 
-                    strokeWidth={4} 
-                    name="Total ESG"
-                    dot={<CustomDot stroke="#f59e0b" />}
-                    strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                    <ReferenceLine
+                      x="Q1 2024"
+                      stroke="#666"
+                      strokeDasharray="5 5"
+                      label={{ value: 'Current', position: 'top' }}
+                    />
 
-              <div className="mt-4 flex items-center justify-center gap-6 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-12 h-0.5 bg-slate-400"></div>
-                  <span className="text-slate-600">Historical Data</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-12 h-0.5 bg-slate-400" style={{borderTop: '2px dashed #94a3b8'}}></div>
-                  <span className="text-purple-600 font-semibold">High-Precision ML Forecast</span>
+                    <Line
+                      type="monotone"
+                      dataKey="E"
+                      stroke="#10b981"
+                      strokeWidth={3}
+                      name="Environmental"
+                      dot={<CustomDot stroke="#10b981" />}
+                      strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="S"
+                      stroke="#3b82f6"
+                      strokeWidth={3}
+                      name="Social"
+                      dot={<CustomDot stroke="#3b82f6" />}
+                      strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="G"
+                      stroke="#8b5cf6"
+                      strokeWidth={3}
+                      name="Governance"
+                      dot={<CustomDot stroke="#8b5cf6" />}
+                      strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="Total"
+                      stroke="#f59e0b"
+                      strokeWidth={4}
+                      name="Total ESG"
+                      dot={<CustomDot stroke="#f59e0b" />}
+                      strokeDasharray={(entry) => entry && entry.type === 'forecast' ? '5 5' : '0'}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+
+                <div className="mt-4 flex items-center justify-center gap-6 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 h-0.5 bg-slate-400"></div>
+                    <span className="text-slate-600">Historical Data</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 h-0.5 bg-slate-400" style={{borderTop: '2px dashed #94a3b8'}}></div>
+                    <span className="text-purple-600 font-semibold">High-Precision ML Forecast</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Forecast Details - ALWAYS VISIBLE */}
-            {forecasts && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-purple-600" />
-                  Quarterly Forecast Details (1 Year Horizon)
-                </h3>
-                <div className="grid grid-cols-4 gap-4">
-                  {forecasts.map((forecast, idx) => (
-                    <div 
-                      key={idx}
-                      className="border-2 border-purple-200 rounded-lg p-4 hover:border-purple-400 transition-all bg-gradient-to-br from-purple-50 to-white"
-                    >
-                      <div className="text-sm font-semibold text-purple-600 mb-3">{forecast.period}</div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs text-slate-600">Environmental:</span>
-                          <span className="font-bold text-green-600">{forecast.E}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs text-slate-600">Social:</span>
-                          <span className="font-bold text-blue-600">{forecast.S}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs text-slate-600">Governance:</span>
-                          <span className="font-bold text-purple-600">{forecast.G}</span>
-                        </div>
-                        <div className="pt-2 mt-2 border-t border-purple-200">
+              {/* Forecast Details - ALWAYS VISIBLE */}
+              {forecasts && (
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Brain className="w-6 h-6 text-purple-600" />
+                    Quarterly Forecast Details (1 Year Horizon)
+                  </h3>
+                  <div className="grid grid-cols-4 gap-4">
+                    {forecasts.map((forecast, idx) => (
+                      <div
+                        key={idx}
+                        className="border-2 border-purple-200 rounded-lg p-4 hover:border-purple-400 transition-all bg-gradient-to-br from-purple-50 to-white"
+                      >
+                        <div className="text-sm font-semibold text-purple-600 mb-3">{forecast.period}</div>
+                        <div className="space-y-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-xs font-semibold text-slate-700">Total:</span>
-                            <span className="font-bold text-lg text-orange-600">{forecast.Total}</span>
+                            <span className="text-xs text-slate-600">Environmental:</span>
+                            <span className="font-bold text-green-600">{forecast.E}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-slate-600">Social:</span>
+                            <span className="font-bold text-blue-600">{forecast.S}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-slate-600">Governance:</span>
+                            <span className="font-bold text-purple-600">{forecast.G}</span>
+                          </div>
+                          <div className="pt-2 mt-2 border-t border-purple-200">
+                            <div className="flex justify-between items-center">
+                              <span className="text-xs font-semibold text-slate-700">Total:</span>
+                              <span className="font-bold text-lg text-orange-600">{forecast.Total}</span>
+                            </div>
+                          </div>
+                          <div className="text-xs text-center text-emerald-600 font-semibold mt-2 bg-emerald-50 rounded py-1">
+                            ✓ {forecast.confidence}% Confidence
                           </div>
                         </div>
-                        <div className="text-xs text-center text-emerald-600 font-semibold mt-2 bg-emerald-50 rounded py-1">
-                          ✓ {forecast.confidence}% Confidence
-                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            {userRole === 'guest' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-xl">
+                <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-900 mb-4">Buy Membership</h3>
+                  <p className="text-amber-800 mb-6 text-lg">
+                    Get full access to AI-powered ESG forecasting and premium features.
+                  </p>
+                  <div className="bg-amber-50 rounded-lg p-4 mb-6">
+                    <h4 className="font-semibold text-amber-900 mb-3">Premium Features Include:</h4>
+                    <ul className="text-left space-y-2 text-amber-700">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>AI-powered ESG forecasting</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Performance trend analysis</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>High-precision ML models</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-amber-600" />
+                        <span>Quarterly forecast details</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('overview')}
+                    className="w-full px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+                  >
+                    Back to Overview
+                  </button>
                 </div>
               </div>
             )}
