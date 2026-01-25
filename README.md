@@ -4,7 +4,6 @@ An interactive **Environmental, Social & Governance (ESG)** analytics platform t
 
 Built with **React**, powered by **EPA EnviroFacts**, and designed to demonstrate how modern ESG platforms actually work under real-world data constraints.
 
----
 
 ## 🚀 What This Platform Does
 
@@ -18,7 +17,6 @@ This platform allows you to:
 
 It is **not a toy ESG score generator** — it reflects the *messy reality* of ESG data.
 
----
 
 ## 🖼️ Platform Walkthrough
 
@@ -31,7 +29,6 @@ It is **not a toy ESG score generator** — it reflects the *messy reality* of E
 * ESG **rating bands** (AAA → CCC)
 * Live data status and last refresh timestamp
 
----
 
 ### 🔹 Environmental Metrics (Live EPA Data)
 
@@ -50,7 +47,6 @@ Each metric is derived from:
 
 > ⚠️ Important: Many technology companies (e.g. NVIDIA, META) **legitimately have no TRI facilities**. The platform handles this correctly.
 
----
 
 ### 🔹 Social & Governance Metrics
 
@@ -64,7 +60,6 @@ These pillars use:
 
 This reflects how many commercial ESG providers model **non-physical risk factors**.
 
----
 
 ### 🔹 Data Sources Transparency
 
@@ -76,9 +71,8 @@ You can always see:
 * Total reported emissions
 * Whether scores are **EPA-backed or estimated**
 
-No black boxes.
 
----
+
 
 ## 🧠 How ESG Scoring Works (Important)
 
@@ -97,7 +91,6 @@ This avoids common ESG mistakes such as:
 * ❌ Tech companies being treated like oil majors
 * ❌ Penalising companies for missing data
 
----
 
 ### 2️⃣ Social (S)
 
@@ -107,7 +100,6 @@ Social metrics are estimated using:
 * Weighted sub-metrics (labour, diversity, community, human rights)
 * Controlled variance to avoid identical scores
 
----
 
 ### 3️⃣ Governance (G)
 
@@ -120,7 +112,6 @@ Governance scoring focuses on:
 
 Governance scores tend to be **more stable**, which is realistic.
 
----
 
 ## 📐 ESG Frameworks Supported
 
@@ -135,7 +126,7 @@ The platform supports multiple ESG frameworks, each with different weightings:
 
 Switching frameworks **recalculates the total ESG score in real time**.
 
----
+
 
 ## 🔑 API Usage (Very Important)
 
@@ -146,8 +137,6 @@ This platform uses the **EPA EnviroFacts Toxic Release Inventory (TRI) API**.
 **Key characteristics:**
 
 * ✅ Public API (no API key required)
-* ❌ Not ticker-based
-* ❌ Not company-friendly
 * ✅ Facility-based and regulation-grade
 
 Example endpoint used:
@@ -164,22 +153,7 @@ https://data.epa.gov/efservice/tri_facility/PRIMARY_NAME/APPLE%20INC/rows/0:50/J
 
 This platform does exactly that.
 
----
 
-## 🧪 Why Scores Sometimes Don’t Change Much
-
-This is **intentional and correct**.
-
-If two companies:
-
-* Are in the same industry
-* Have no EPA TRI facilities
-
-Then their **Environmental scores should be similar**, not artificially different.
-
-This reflects real ESG modelling practice.
-
----
 
 ## 🛠️ Tech Stack
 
@@ -187,9 +161,8 @@ This reflects real ESG modelling practice.
 * **Recharts** (Data visualisation)
 * **Lucide Icons**
 * **EPA EnviroFacts API**
-* Tailwind CSS
+* **Tailwind CSS**
 
----
 
 ## 🎯 Who This Project Is For
 
@@ -200,7 +173,6 @@ This reflects real ESG modelling practice.
 
 This is **not** a greenwashing demo.
 
----
 
 ## ⚠️ Disclaimer
 
@@ -208,7 +180,7 @@ This platform is for **educational and demonstration purposes only**.
 
 It is **not investment advice**, and ESG scores shown here are **not official ratings** from MSCI, Sustainalytics, or Refinitiv.
 
----
+
 
 ## 📌 Final Note
 
