@@ -1,70 +1,221 @@
-# Getting Started with Create React App
+# 🌱 ESG Analysis Platform V2 — Enhanced
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive **Environmental, Social & Governance (ESG)** analytics platform that combines **real-time environmental data**, **industry-aware scoring**, and **transparent assumptions** to produce credible ESG insights.
 
-## Available Scripts
+Built with **React**, powered by **EPA EnviroFacts**, and designed to demonstrate how modern ESG platforms actually work under real-world data constraints.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 What This Platform Does
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This platform allows you to:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* 🔍 Search any public company by **ticker** (e.g. `AAPL`, `TSLA`, `NVDA`)
+* 🌍 Pull **real environmental emissions data** from the **EPA EnviroFacts TRI API**
+* 📊 Calculate **Environmental, Social, and Governance scores** using weighted frameworks
+* 🧠 Transparently fall back to **estimated ESG scores** when real-world data is unavailable
+* 📈 Visualise ESG performance using charts, radar plots, and trends
 
-### `npm test`
+It is **not a toy ESG score generator** — it reflects the *messy reality* of ESG data.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🖼️ Platform Walkthrough
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🔹 Overview Dashboard
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Overview Dashboard](./images/overview.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* **Total ESG Score** (framework-weighted)
+* Individual **E / S / G pillar scores**
+* ESG **rating bands** (AAA → CCC)
+* Live data status and last refresh timestamp
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔹 Environmental Metrics (Live EPA Data)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Environmental Metrics](./images/environmental.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* GHG Emissions
+* Air Quality
+* Water Management
+* Waste Reduction
+* Toxic Releases
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Each metric is derived from:
 
-## Learn More
+* 🟢 **EPA TRI facility data** when available
+* 🟡 **Industry-calibrated estimates** when not
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> ⚠️ Important: Many technology companies (e.g. NVIDIA, META) **legitimately have no TRI facilities**. The platform handles this correctly.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+### 🔹 Social & Governance Metrics
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![Social Governance Metrics](./images/social-governance.png)
 
-### Analyzing the Bundle Size
+These pillars use:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* Industry benchmarks
+* Controlled randomness (to avoid flat scores)
+* Weight-based aggregation
 
-### Making a Progressive Web App
+This reflects how many commercial ESG providers model **non-physical risk factors**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+### 🔹 Data Sources Transparency
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![Data Sources](./images/data-sources.png)
 
-### Deployment
+You can always see:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+* Number of EPA facilities found
+* Total reported emissions
+* Whether scores are **EPA-backed or estimated**
 
-### `npm run build` fails to minify
+No black boxes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🧠 How ESG Scoring Works (Important)
+
+### 1️⃣ Environmental (E)
+
+Environmental scores are calculated using:
+
+* **EPA EnviroFacts TRI data** (when available)
+* Emissions banding (not naive linear scaling)
+* Facility-count penalties (log-scaled, non-saturating)
+* Industry-based calibration
+
+This avoids common ESG mistakes such as:
+
+* ❌ Everyone scoring 95+
+* ❌ Tech companies being treated like oil majors
+* ❌ Penalising companies for missing data
+
+---
+
+### 2️⃣ Social (S)
+
+Social metrics are estimated using:
+
+* Industry baselines
+* Weighted sub-metrics (labour, diversity, community, human rights)
+* Controlled variance to avoid identical scores
+
+---
+
+### 3️⃣ Governance (G)
+
+Governance scoring focuses on:
+
+* Board independence
+* Ethics & transparency
+* Shareholder rights
+* Executive compensation alignment
+
+Governance scores tend to be **more stable**, which is realistic.
+
+---
+
+## 📐 ESG Frameworks Supported
+
+The platform supports multiple ESG frameworks, each with different weightings:
+
+| Framework | Environmental | Social | Governance |
+| --------- | ------------- | ------ | ---------- |
+| GRI       | 33%           | 33%    | 34%        |
+| SASB      | 30%           | 35%    | 35%        |
+| TCFD      | 50%           | 20%    | 30%        |
+| CDP       | 60%           | 15%    | 25%        |
+
+Switching frameworks **recalculates the total ESG score in real time**.
+
+---
+
+## 🔑 API Usage (Very Important)
+
+### 🌍 EPA EnviroFacts TRI API
+
+This platform uses the **EPA EnviroFacts Toxic Release Inventory (TRI) API**.
+
+**Key characteristics:**
+
+* ✅ Public API (no API key required)
+* ❌ Not ticker-based
+* ❌ Not company-friendly
+* ✅ Facility-based and regulation-grade
+
+Example endpoint used:
+
+```
+https://data.epa.gov/efservice/tri_facility/PRIMARY_NAME/APPLE%20INC/rows/0:50/JSON
+```
+
+### Why this matters
+
+* Many companies **do not report TRI data**
+* Missing data ≠ bad performance
+* ESG systems must handle this gracefully
+
+This platform does exactly that.
+
+---
+
+## 🧪 Why Scores Sometimes Don’t Change Much
+
+This is **intentional and correct**.
+
+If two companies:
+
+* Are in the same industry
+* Have no EPA TRI facilities
+
+Then their **Environmental scores should be similar**, not artificially different.
+
+This reflects real ESG modelling practice.
+
+---
+
+## 🛠️ Tech Stack
+
+* **React** (Frontend)
+* **Recharts** (Data visualisation)
+* **Lucide Icons**
+* **EPA EnviroFacts API**
+* Tailwind CSS
+
+---
+
+## 🎯 Who This Project Is For
+
+* ESG / Sustainability analysts
+* Product & data science portfolios
+* Consulting case studies
+* Demonstrating *real-world data reasoning*
+
+This is **not** a greenwashing demo.
+
+---
+
+## ⚠️ Disclaimer
+
+This platform is for **educational and demonstration purposes only**.
+
+It is **not investment advice**, and ESG scores shown here are **not official ratings** from MSCI, Sustainalytics, or Refinitiv.
+
+---
+
+## 📌 Final Note
+
+ESG data is messy.
+
+This platform doesn’t hide that — it **embraces it**, explains it, and models it responsibly.
+
+If you’re building ESG tools, **this is how it should be done**.
+
+🌍
