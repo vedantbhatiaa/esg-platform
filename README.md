@@ -24,7 +24,7 @@ It is **not a toy ESG score generator** — it reflects the *messy reality* of E
 
 ### 🔹 Overview Dashboard
 
-![Overview Dashboard](./images/overview.png)
+![Overview Dashboard](./images/overview.jpg)
 
 * **Total ESG Score** (framework-weighted)
 * Individual **E / S / G pillar scores**
@@ -35,7 +35,7 @@ It is **not a toy ESG score generator** — it reflects the *messy reality* of E
 
 ### 🔹 Environmental Metrics (Live EPA Data)
 
-![Environmental Metrics](./images/environmental.png)
+![Environmental Metrics](./images/pillars.jpg)
 
 * GHG Emissions
 * Air Quality
@@ -54,7 +54,7 @@ Each metric is derived from:
 
 ### 🔹 Social & Governance Metrics
 
-![Social Governance Metrics](./images/social-governance.png)
+![Social Governance Metrics](./images/materiality.jpg)
 
 These pillars use:
 
@@ -68,7 +68,7 @@ This reflects how many commercial ESG providers model **non-physical risk factor
 
 ### 🔹 Data Sources Transparency
 
-![Data Sources](./images/data-sources.png)
+![Data Sources](./images/data-source.jpg)
 
 You can always see:
 
