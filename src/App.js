@@ -7,11 +7,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in (from localStorage)
-    const savedRole = localStorage.getItem('userRole');
-    if (savedRole) {
-      setUserRole(savedRole);
-    }
+    // Clear any previous session data for fresh start
+    localStorage.removeItem('userRole');
     setIsLoading(false);
   }, []);
 
