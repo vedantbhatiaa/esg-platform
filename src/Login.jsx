@@ -4,19 +4,38 @@ const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    setError('');
+    
+    // Show password field for admin or user, hide for guest or empty
+    if (value.toLowerCase() === 'admin' || value.toLowerCase() === 'user') {
+      setShowPassword(true);
+    } else {
+      setShowPassword(false);
+      setPassword('');
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple demo authentication
+    // Guest access - direct login
+    if (username.toLowerCase() === 'guest') {
+      onLogin('guest');
+      return;
+    }
+
+    // Admin authentication
     if (username === 'admin' && password === 'admin123') {
       onLogin('admin');
     } else if (username === 'user' && password === 'user123') {
       onLogin('user');
-    } else if (username === 'guest' && password === '') {
-      onLogin('guest');
     } else {
-      setError('Invalid credentials. Try admin/admin123, user/user123, or guest (no password)');
+      setError('Invalid credentials. Please try again.');
     }
   };
 
@@ -42,27 +61,30 @@ const Login = ({ onLogin }) => {
               id="username"
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
               placeholder="Enter username"
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-              placeholder="Enter password (leave empty for guest)"
-              required={username !== 'guest'}
-            />
-          </div>
+          {showPassword && (
+            <div className="animate-fadeIn">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="Enter password"
+                required
+                autoFocus
+              />
+            </div>
+          )}
 
           {error && (
             <div className="text-red-600 text-sm text-center">
@@ -77,13 +99,6 @@ const Login = ({ onLogin }) => {
             Sign In
           </button>
         </form>
-
-        <div className="mt-6 text-center text-sm text-gray-600">
-          <p>Demo Credentials:</p>
-          <p>Admin: admin / admin123</p>
-          <p>User: user / user123</p>
-          <p>Guest: guest / (no password)</p>
-        </div>
       </div>
     </div>
   );
