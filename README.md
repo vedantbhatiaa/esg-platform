@@ -1,4 +1,4 @@
-# 🌱 ESG Analysis Platform V2 — Enhanced
+# 🌱 ESG Analysis Platform 
 
 An interactive **Environmental, Social & Governance (ESG)** analytics platform that combines **real-time environmental data**, **industry-aware scoring**, and **transparent assumptions** to produce credible ESG insights.
 
